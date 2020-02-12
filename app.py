@@ -24,15 +24,10 @@ st.subheader('Decision Tree Classifier')
 
 
 # load models
-import pickle
-
-# load models
-with open('cat_encoder.pickle', 'rb') as f:
-    cat_encoder = pickle.load(f)
-with open('scaler.pickle', 'rb') as f:
-    scaler = pickle.load(f)
-with open('final_model.pickle', 'rb') as f:
-    final_model = pickle.load(f)
+import joblib
+cat_encoder = joblib.load("cat_encoder.pickle")
+scaler = joblib.load("scaler.pickle")
+final_model = joblib.load("final_model.pickle")
 
 df[['state', 'international plan']] = cat_encoder.transform(df[['state', 'international plan']])
 y = df['churn']
@@ -67,7 +62,6 @@ service_calls = int(st.number_input("Total Customer Service Calls", 0, 100, 1))
 prediction_state = st.text('calculating...')
 # when customer service call >=4, churn, holding other features same
 x =pd.DataFrame([[state, acct_length, inter_plan, total_day_minutes, total_day_calls, service_calls]])
-x
 x.iloc[:, [0, 2]] = cat_encoder.transform(x.iloc[:, [0, 2]])
 x=scaler.transform(x)
 y_pred = final_model.predict(x)
