@@ -1,6 +1,14 @@
 # Streamlit Demo using Churn Analysis
 
-## Setup
+This repo demonstrates how to showcase your data science project as a web application using [Streamlit](https://www.streamlit.io/) both locally and remotely (hosted on Heroku).
+
+## Data and Model
+
+The data used in this repo is a simplified version of the [customer churn dataset from Kaggle](https://www.kaggle.com/c/churn-analytics-bda/overview). The encoder, scaler, and a simple decision tree model are pre-trained. The focus of this repo is the usage of Streamlit, so no need to pay much attention to the model itself.
+
+The code to load data, make predictions, and present results using Streamlit is in `app.py`
+
+## Local Setup
 
 ```shell
 $ python3 -m venv venv
@@ -26,4 +34,4 @@ This part is based on this [tutorial](https://towardsdatascience.com/quickly-bui
 - Create a `Procfile`: Heroku apps include a Procfile that specifies the commands that are executed by the app on startup.
 - Push the code of this repo to the new instance: `git push heroku master`
 - Run `heroku ps:scale web=1` to ensure that at least one instance of the app is running
-- Open the application in browser with `heroku open`
+- Run `heroku open` to open the application at https://st-churn-demo.herokuapp.com/
