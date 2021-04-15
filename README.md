@@ -1,20 +1,18 @@
-# Streamlit Demo using Churn Analysis
+# Streamlit Basics
 
 This repo demonstrates how to showcase your data science project as a web application using [Streamlit](https://www.streamlit.io/) both locally and remotely (AWS and Heroku).
 
-Tested with Python 3.7.x
+Tested with Python 3.8.1
 
 ## Folder Structure
 
+- st-demo: files for the streamlit demo
 - aws: files used for AWS Fargate deployment using AWS CDK
 - heroku: files used for heroku deployment
-- st-demo: files for streamlit demo
 
 ## Streamlit Data and Model
 
-The data used in this repo is a simplified version of the [customer churn dataset from Kaggle](https://www.kaggle.com/c/churn-analytics-bdapy/overview). The encoder, scaler, and a simple decision tree model are pre-trained (scikit-learn==0.22.1) and are provided in `st-demo/models` folder. The focus of this repo is the usage of Streamlit, so no need to pay much attention to the model itself.
-
-The code to load data, make predictions, and present results using Streamlit is in `st-demo/app.py`
+The data used in this repo is the [Titanic dataset from Kaggle](https://www.kaggle.com/c/titanic). The simple decision tree model is pre-trained using scikit-learn and is provided in `tree-clf.pickle` file. The related analysis code is the `app.ipynb` notebook. The code to load and visualize the data, make predictions, and present results using Streamlit is in `st-demo/app.py`
 
 ## Run Demo Locally 
 
@@ -24,9 +22,9 @@ you can directly run streamlit locally in the repo root folder as follows:
 
 ```shell
 $ cd st-demo 
-$ python3 -m venv venv
+$ python -m venv venv
 $ source venv/bin/activate
-$ pip install -r requirements.txt
+$ pip install -r requirements-dev.txt
 $ streamlit run app.py
 ```
 Open http://localhost:8501 to view the demo
@@ -40,19 +38,29 @@ $ cd st-demo
 $ docker build -t st-demo .
 $ docker run -it --rm -p '8501:8501' st-demo
 ```
-
 `-it` keeps the terminal interactive
 `--rm` removes the image once the command is stopped (e.g. using control + c)
 
 go to http://localhost:8501/ to view the app.
 
-```
-docker stop st-churn
-docker rm st-churn
-```
+## Heroku Deployment
+
+- Create a Heroku account: https://www.heroku.com/
+- Install Heroku [Command Line Interface (CLI)](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
+- Login to Heroku: in this repo folder, and run `heroku login`
+- Create an instance: `heroku create st-demo`
+- Create a `setup.sh` file: this file creates the following two files
+`~/.streamlit/credentials.toml` and `~/.streamlit/config.tomlon the server` to:
+    - set a basic credential with an email (any email should work)
+    - set headless = true, enableCORS=false, and port = $PORT
+
+    Refer to https://discuss.streamlit.io/t/how-to-use-streamlit-in-docker/1067
+- Create a `Procfile`: Heroku apps include a Procfile that specifies the commands that are executed by the app on startup.
+- Push the code of this repo to the new instance: `git push heroku master`
+- Run `heroku ps:scale web=1` to ensure that at least one instance of the app is running
+- Run `heroku open` to open the application at https://st-demo.herokuapp.com/
 
 ## AWS Deployment
-This part is adapted based on this [tutorial](https://github.com/nicolasmetallo/legendary-streamlit-demo).
 
 Install AWS CLI: `pip install awscli`
 
@@ -108,21 +116,7 @@ REMEMBER to delete your stack to stop any unexpected expenses!!
 $ cdk destroy
 ```
 
-## Heroku Deployment
+## References
 
-This part is based on this [tutorial](https://towardsdatascience.com/quickly-build-and-deploy-an-application-with-streamlit-988ca08c7e83).
-
-- Create Heroku account
-- Install Heroku [Command Line Interface (CLI)](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
-- Login to Heroku: in this repo folder, and run `heroku login`
-- Create an instance: `heroku create st-churn-demo`
-- Create a `setup.sh` file: this file creates the following two files
-`~/.streamlit/credentials.toml` and `~/.streamlit/config.tomlon the server` to:
-    - set a basic credential with an email (any email should work)
-    - set headless = true, enableCORS=false, and port = $PORT
-
-    Refer to https://discuss.streamlit.io/t/how-to-use-streamlit-in-docker/1067
-- Create a `Procfile`: Heroku apps include a Procfile that specifies the commands that are executed by the app on startup.
-- Push the code of this repo to the new instance: `git push heroku master`
-- Run `heroku ps:scale web=1` to ensure that at least one instance of the app is running
-- Run `heroku open` to open the application at https://st-churn-demo.herokuapp.com/
+- Heroku part is based on this [tutorial](https://towardsdatascience.com/-quickly-build-and-deploy-an-application-with-streamlit-988ca08c7e83).
+- AWS part is adapted based on this [tutorial](https://github.com/nicolasmetallo/legendary-streamlit-demo).

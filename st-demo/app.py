@@ -1,70 +1,63 @@
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import joblib
-from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+import pandas as pd
+import streamlit as st
 
-st.title('Customer Churn Analysis')
+st.title('Titanic Survival Analysis and Prediction')
 # load dataset
-df = pd.read_csv('customer-churn-example-simple.csv')
-df['churn'] = df['churn'].apply(str)
-data_load_state = st.text('Loading data...')
+df = pd.read_csv('titanic_train.csv')
+
+# show the entire dataframe
 st.write(df)
-data_load_state.text('Checkout the dataset:')
 
-st.subheader('Churn Rate')
+# f-string
+st.subheader('Survival Rate')
+survival_count = df['Survived'].value_counts()
+st.text(f'Survival rate = {survival_count.values[1]/sum(survival_count):.2%}')
 
-churn_count = df['churn'].value_counts()
-st.text(f'Churn rate = {churn_count.values[1]/sum(churn_count):.2%}')
-fig, ax = plt.subplots()
-sns.barplot(churn_count.index, churn_count.values)
+# simple plotting
+fig, ax = plt.subplots(1, 2, figsize=(15, 5))
+survival_count.plot.bar(ax=ax[0])
+df['Age'].plot.hist(ax=ax[1])
 st.pyplot(fig)
 
-st.subheader('Decision Tree Classifier')
+# markdown
+st.subheader('Making Prediction')
+st.markdown('**Please provide passenger information**:')  # you can use markdown like this
 
 # load models
-cat_encoder = joblib.load("models/cat_encoder.pickle")
-scaler = joblib.load("models/scaler.pickle")
-final_model = joblib.load("models/final_model.pickle")
+tree_clf = joblib.load('tree-clf.pickle')
 
-df[['state', 'international plan']] = cat_encoder.transform(df[['state', 'international plan']])
-y = df['churn']
-df.drop(['churn'], axis=1, inplace=True)
-X = scaler.transform(df)
-y_pred = final_model.predict(X)
+# get inputs
 
-clf_tree_conf_matrix = confusion_matrix(y, y_pred)
+sex = st.selectbox('Sex', ['female', 'male'])
+age = int(st.number_input('Age:', 0, 120, 20))
+sib_sp = int(st.number_input('# of siblings / spouses aboard:', 0, 10, 0))
+par_ch = int(st.number_input('# of parents / children aboard:', 0, 10, 0))
+pclass = st.selectbox('Ticket class (1 = 1st, 2 = 2nd, 3 = 3rd)', [1, 2, 3])
+fare = int(st.number_input('# of parents / children aboard:', 0, 100, 0))
+embarked = st.selectbox('Port of Embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)', ['C', 'Q', 'S'])
 
-fig, ax = plt.subplots()
-plt.title('Decision Tree');
-sns.heatmap(clf_tree_conf_matrix, annot=True, fmt="d"); #fmt="d" string formatting
-st.text('Confusion Matrix')
-st.pyplot(fig)
+# this is how to dynamically change text
+prediction_state = st.markdown('calculating...')
 
-st.subheader('Making Prediction')
-st.markdown('Note: change total customer calls to 4 or more to see the prediction result')
+passenger = pd.DataFrame(
+    {
+        'Pclass': [pclass],
+        'Sex': [sex],
+        'Age': [age],
+        'SibSp': [sib_sp],
+        'Parch': [par_ch],
+        'Fare': [fare],
+        'Embarked': [embarked],
+    }
+)
 
-st.markdown("Please provide customer information:")
+y_pred = tree_clf.predict(passenger)
 
-state = st.text_input("State", 'IN')
-acct_length = int(st.number_input("Account Length", 0, 500, 165))
-inter_plan = st.selectbox("International Plan", ["yes", "no"])
-total_day_minutes = int(st.number_input("Total Daytime Minutes", 0, 1000, 100))
-total_day_calls = int(st.number_input("Total Daytime Calls", 0, 1000, 30))
-service_calls = int(st.number_input("Total Customer Service Calls", 0, 100, 1))
-
-prediction_state = st.text('calculating...')
-# when customer service call >=4, churn, holding other features same
-x = pd.DataFrame([[state, acct_length, inter_plan, total_day_minutes, total_day_calls, service_calls]])
-x.iloc[:, [0, 2]] = cat_encoder.transform(x.iloc[:, [0, 2]])
-x = scaler.transform(x)
-y_pred = final_model.predict(x)
-
-# y_pred
-if y_pred == 'True':
-    msg = 'This customer is a churn customer.'
+if y_pred[0] == 0:
+    msg = 'This passenger is predicted to be: **died**'
 else:
-    msg = 'This customer is a loyal customer.'
+    msg = 'This passenger is predicted to be: **survived**'
 
-prediction_state.text(msg)
+prediction_state.markdown(msg)
