@@ -47,10 +47,10 @@ go to http://localhost:8501/ to view the app.
 
 - Create a Heroku account: https://www.heroku.com/
 - Install Heroku [Command Line Interface (CLI)](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
-- Login to Heroku: in this repo folder, and run `heroku login`
-- Create an instance: `heroku create st-demo`
+- Login to Heroku: in this repo root folder (don't go into the heroku sub-folder), and run `heroku login`
+- Create an instance: `heroku create st-demo-harrywang` you should use a unique name for the app.
 - Create a `setup.sh` file: this file creates the following two files
-`~/.streamlit/credentials.toml` and `~/.streamlit/config.tomlon the server` to:
+`~/.streamlit/credentials.toml` and `~/.streamlit/config.toml` on the server to:
     - set a basic credential with an email (any email should work)
     - set headless = true, enableCORS=false, and port = $PORT
 
