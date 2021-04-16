@@ -1,6 +1,6 @@
 # Streamlit Basics
 
-This repo demonstrates how to showcase your data science project as a web application using [Streamlit](https://www.streamlit.io/) both locally and remotely (AWS and Heroku).
+This repo demonstrates how to showcase your data science/machine learning project as a web application using [Streamlit](https://www.streamlit.io/) and how to host your app on Heroku for free.
 
 Tested with Python 3.8
 
@@ -12,11 +12,10 @@ Tested with Python 3.8
 - `app.py`: streamlit app file
 - `Dockerfile` for docker deployment
 - `Procfile` and `setup.sh`: heroku deployment files - they must be in the root folder
-- `aws` folder: files used for AWS Fargate deployment using AWS CDK	
 
 ## Streamlit Data and Model
 
-The data used in this repo is the [Titanic dataset from Kaggle](https://www.kaggle.com/c/titanic). The simple decision tree model is pre-trained using scikit-learn and is provided in `tree-clf.pickle` file. The related analysis code is the `app.ipynb` notebook. The code to load and visualize the data, make predictions, and present results using Streamlit is in `st-demo/app.py`
+The data used in this repo is the [Titanic dataset from Kaggle](https://www.kaggle.com/c/titanic). The simple decision tree model is pre-trained using scikit-learn and is provided in `tree-clf.pickle` file. The related analysis code is in the `app.ipynb` notebook. The code to load and visualize the data, make predictions, and present results using Streamlit is in `app.py`
 
 ## Run Demo Locally 
 
