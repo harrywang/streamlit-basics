@@ -50,15 +50,19 @@ go to http://localhost:8501/ to view the app.
 - Create a Heroku account: https://www.heroku.com/
 - Install Heroku [Command Line Interface (CLI)](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
 - Login to Heroku: in this repo root folder (don't go into the heroku sub-folder), and run `heroku login`
-- Create an instance: `heroku create st-demo-harry` you should use a unique name for the app. a new git remote named `heroku` has been created, check with `git remote -v`
+- Create an instance: `heroku create st-demo-harrywang` you should use a unique name for the app. a new git remote named `heroku` has been created, check with `git remote -v`
 - Create a `setup.sh` file (done for you): this file creates the following two files
 `~/.streamlit/credentials.toml` and `~/.streamlit/config.toml` on the server to:
     - set a basic credential with an email (any email should work)
     - set headless = true, enableCORS=false, and port = $PORT
 - Create a `Procfile` (done for you): Heroku apps include a Procfile that specifies the commands that are executed by the app on startup. 
 - Push the code of this repo to the new instance: `git push heroku master`
-- Run `heroku ps:scale web=1` to ensure that at least one instance of the app is running
-- Run `heroku open` to open the application at https://st-demo.herokuapp.com/
+- Run `heroku ps:scale web=1` to `web=1` ensures that one instance (dynos) is running:
+```
+$ heroku ps:scale web=1
+Scaling dynos... done, now running web at 1:Free
+```
+- Run `heroku open` to open the application at https://st-demo-harrywang.herokuapp.com/
 
 ## AWS Deployment
 
