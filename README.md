@@ -2,13 +2,17 @@
 
 This repo demonstrates how to showcase your data science project as a web application using [Streamlit](https://www.streamlit.io/) both locally and remotely (AWS and Heroku).
 
-Tested with Python 3.8.1
+Tested with Python 3.8
 
-## Folder Structure
+## Files
 
-- st-demo: files for the streamlit demo
-- aws: files used for AWS Fargate deployment using AWS CDK
-- heroku: files used for heroku deployment
+- `requirements.txt` and `requirements-dev.txt`: package requirements files
+- `titanic_train.csv` and `tree-clf.pickle`: data file and pre-trained decision tree model
+- `app.ipynb`: notebook for the analysis
+- `app.py`: streamlit app file
+- `Dockerfile` for docker deployment
+- `Procfile` and `setup.sh`: heroku deployment files - they must be in the root folder
+- `aws` folder: files used for AWS Fargate deployment using AWS CDK	
 
 ## Streamlit Data and Model
 
@@ -21,7 +25,6 @@ The data used in this repo is the [Titanic dataset from Kaggle](https://www.kagg
 you can directly run streamlit locally in the repo root folder as follows:
 
 ```shell
-$ cd st-demo 
 $ python -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements-dev.txt
@@ -34,7 +37,6 @@ Open http://localhost:8501 to view the demo
 build and run the docker image named `st-demo`:
 
 ```
-$ cd st-demo 
 $ docker build -t st-demo .
 $ docker run -it --rm -p '8501:8501' st-demo
 ```
@@ -48,14 +50,12 @@ go to http://localhost:8501/ to view the app.
 - Create a Heroku account: https://www.heroku.com/
 - Install Heroku [Command Line Interface (CLI)](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
 - Login to Heroku: in this repo root folder (don't go into the heroku sub-folder), and run `heroku login`
-- Create an instance: `heroku create st-demo-harrywang` you should use a unique name for the app.
-- Create a `setup.sh` file: this file creates the following two files
+- Create an instance: `heroku create st-demo-harry` you should use a unique name for the app. a new git remote named `heroku` has been created, check with `git remote -v`
+- Create a `setup.sh` file (done for you): this file creates the following two files
 `~/.streamlit/credentials.toml` and `~/.streamlit/config.toml` on the server to:
     - set a basic credential with an email (any email should work)
     - set headless = true, enableCORS=false, and port = $PORT
-
-    Refer to https://discuss.streamlit.io/t/how-to-use-streamlit-in-docker/1067
-- Create a `Procfile`: Heroku apps include a Procfile that specifies the commands that are executed by the app on startup.
+- Create a `Procfile` (done for you): Heroku apps include a Procfile that specifies the commands that are executed by the app on startup. 
 - Push the code of this repo to the new instance: `git push heroku master`
 - Run `heroku ps:scale web=1` to ensure that at least one instance of the app is running
 - Run `heroku open` to open the application at https://st-demo.herokuapp.com/
