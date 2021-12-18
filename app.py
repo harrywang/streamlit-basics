@@ -1,11 +1,11 @@
-import joblib
-import matplotlib.pyplot as plt
-import pandas as pd
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import joblib
 
 st.title('Titanic Survival Analysis and Prediction')
 # load dataset
-df = pd.read_csv('titanic_train.csv')
+df = pd.read_csv('titanic.csv')
 
 # show the entire dataframe
 st.write(df)
@@ -21,22 +21,23 @@ survival_count.plot.bar(ax=ax[0])
 df['Age'].plot.hist(ax=ax[1])
 st.pyplot(fig)
 
-# markdown
+
 st.subheader('Making Prediction')
 st.markdown('**Please provide passenger information**:')  # you can use markdown like this
 
+
 # load models
-tree_clf = joblib.load('tree-clf.pickle')
+tree_clf = joblib.load('clf-best.pickle')
 
 # get inputs
 
 sex = st.selectbox('Sex', ['female', 'male'])
 age = int(st.number_input('Age:', 0, 120, 20))
 sib_sp = int(st.number_input('# of siblings / spouses aboard:', 0, 10, 0))
-par_ch = int(st.number_input('# of parents / children aboard:', 0, 10, 0))
+#par_ch = int(st.number_input('# of parents / children aboard:', 0, 10, 0))
 pclass = st.selectbox('Ticket class (1 = 1st, 2 = 2nd, 3 = 3rd)', [1, 2, 3])
 fare = int(st.number_input('# of parents / children aboard:', 0, 100, 0))
-embarked = st.selectbox('Port of Embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)', ['C', 'Q', 'S'])
+#embarked = st.selectbox('Port of Embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)', ['C', 'Q', 'S'])
 
 # this is how to dynamically change text
 prediction_state = st.markdown('calculating...')
@@ -44,12 +45,12 @@ prediction_state = st.markdown('calculating...')
 passenger = pd.DataFrame(
     {
         'Pclass': [pclass],
-        'Sex': [sex],
+        'Sex': [sex], 
         'Age': [age],
         'SibSp': [sib_sp],
-        'Parch': [par_ch],
+#        'Parch': [par_ch],
         'Fare': [fare],
-        'Embarked': [embarked],
+#        'Embarked': [embarked],
     }
 )
 
