@@ -44,6 +44,22 @@ $ docker run -it --rm -p '8501:8501' st-demo
 
 go to http://localhost:8501/ to view the app.
 
+
+## Streamlit Cloud Deployment
+ 
+1. Put your app on GitHub (like this repo)
+Make sure it's in a public folder and that you have a requirements.txt file.
+ 
+2. Sign into Streamlit Cloud
+Sign into share.streamlit.io with your GitHub email address, you need to have access to Streamlit Cloud service.
+ 
+3. Deploy and share! 
+Click "New app", then fill in your repo, branch, and file path, choose a Python version (3.9 for this demo) and click "Deploy", then you should be able to see your app.
+
+https://share.streamlit.io/harrywang/streamlit-basics/app.py
+
+<img width="838" alt="Screen Shot 2021-12-18 at 2 49 54 PM" src="https://user-images.githubusercontent.com/595772/146653960-664146b7-afcc-4b5d-b0aa-763bd5788482.png">
+
 ## Heroku Deployment
 
 - Create a Heroku account: https://www.heroku.com/
