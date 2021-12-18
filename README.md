@@ -39,7 +39,9 @@ build and run the docker image named `st-demo`:
 $ docker build -t st-demo .
 $ docker run -it --rm -p '8501:8501' st-demo
 ```
+
 `-it` keeps the terminal interactive
+
 `--rm` removes the image once the command is stopped (e.g. using control + c)
 
 go to http://localhost:8501/ to view the app.
